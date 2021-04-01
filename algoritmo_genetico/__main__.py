@@ -45,23 +45,53 @@ def selection(population, fitness_list, new_generation_size ):
     
     return new_population
 
+def crossover(individual1, individual2):
+    # print("crossover: ")
+    # print(individual1)
+    # print(individual2)
+
+    gene_length = len(individual1)
+    
+    new_gene_start = individual1[:round(gene_length/2)]
+    new_gene_end = individual2[round(gene_length/2):]
+
+    new_individual = new_gene_start + new_gene_end
+
+    # print("result: ")
+    # print(new_individual)
+
+    return new_individual
+
+def crossover_population(population):
+    # print("crossing population")
+    # print(population)
+    new_population = []
+
+    # crossover everyone with everyone
+    for individual1 in population:
+        for individual2 in population:
+            if(individual1 != individual2):
+                children = crossover(individual1, individual2)
+                new_population.append(children)
+    
+    population.extend(new_population)
+
+    return population
+
+
 if __name__ == "__main__":
-    init_population_size = 4
-    next_generation_size = round(init_population_size*0.5)
+    init_population_size = 5
+    next_generation_size = round(init_population_size*0.3)
 
     print("init_population_size = " + str(init_population_size))
     print("next_generation_size = " + str(next_generation_size))
 
-
     population = generate_population(init_population_size)
-    print(population)
 
-    fitness_list = evaluate_population(population)
+    new_population = crossover_population(population)
 
-    new_population = selection(population, fitness_list, next_generation_size)
+    fitness_list = evaluate_population(new_population)
 
-    print(new_population)
+    selected_population = selection(population, fitness_list, next_generation_size)
 
-
-    # print(evaluate_population(population))
-    # print(evaluate_population(new_population))
+    # print(selected_population)
