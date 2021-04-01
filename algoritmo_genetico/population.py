@@ -19,20 +19,30 @@ def generate_population(size):
         population.append(chromosome)
     return population
 
-def evaluate_population(population):
+def evaluate_population(population, print_progress=False):
+    if(print_progress):
+        print("- evaluate population", flush=True)
+    population_size = len(population)
     fitness_list =[]
     index = 0
     for individual in population:
+        if(print_progress):
+            print(str(round((index/population_size)*100,2))+'%\r', end="", flush=True)
+
         score = fitness.get_fitness(individual)
         fitness_list.append((index,score))
 
         index += 1
+    if(print_progress):
+        print("")
     
+    fitness_list = sorted(fitness_list, key=lambda fitness: fitness[1], reverse=True)
     return fitness_list
 
 def selection(population, fitness_list, new_generation_size ):
     # ordena a lista de fitness pelo score
-    fitness_list = sorted(fitness_list, key=lambda fitness: fitness[1])
+    # fitness_list = evaluate_population(population, True)
+    # fitness_list = sorted(fitness_list, key=lambda fitness: fitness[1], reverse=True)
 
     new_population = []
     for f in fitness_list:
