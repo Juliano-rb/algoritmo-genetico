@@ -24,9 +24,9 @@ def next_generation(population, next_generation_size, mutation_rate, mutation_im
     return population
 
 if __name__ == "__main__":
-    init_population_size = 100
-    mutation_rate = 0.4
-    mutation_impact = 60 # something between 0 and this
+    init_population_size = 60
+    mutation_rate = 0.1
+    mutation_impact = 10 # something between 0 and this
 
     print("init_population_size = " + str(init_population_size))
 
@@ -34,10 +34,14 @@ if __name__ == "__main__":
     print("population generated")
 
     generation_count = 0
-    while (generation_count < 10):
+    while (generation_count < 15):
         population = next_generation(population,
             init_population_size, 
             mutation_rate,
             mutation_impact,
             generation_count)
         generation_count+=1
+
+        if(generation_count > 10):
+            mutation_rate += 0.2
+            mutation_impact += 10
